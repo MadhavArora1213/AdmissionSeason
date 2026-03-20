@@ -1,6 +1,10 @@
 <?php
 $page = 'leads';
 include __DIR__ . '/../../templates/admin_header.php';
+
+use EduSearch\Models\Lead;
+$leads = Lead::getAll();
+$totalLeads = Lead::getCount();
 ?>
 
 <!-- Header -->
@@ -31,7 +35,7 @@ include __DIR__ . '/../../templates/admin_header.php';
 <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; margin-bottom: 3rem;">
     <div class="kpi-card">
         <div class="kpi-label">Leads Ingested</div>
-        <div class="kpi-value">42.1K</div>
+        <div class="kpi-value"><?= number_format($totalLeads) ?></div>
         <div class="kpi-sync">
             <div class="pulse"></div>
             <span style="font-size: 0.55rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.1rem; color: var(--secondary); opacity: 0.4;">Feed Active</span>
@@ -77,26 +81,39 @@ include __DIR__ . '/../../templates/admin_header.php';
                 </tr>
             </thead>
             <tbody>
+                <?php foreach ($leads as $lead): ?>
                 <tr style="border-bottom: 1px solid var(--border); transition: 0.2s;" onmouseover="this.style.background='#fcfdfe'" onmouseout="this.style.background='white'">
                     <td style="padding: 1.25rem 1.5rem;">
-                        <p style="font-size: 0.85rem; font-weight: 900; color: var(--text-dark); margin: 0;">Rahul Iyer</p>
-                        <p style="font-size: 0.6rem; font-weight: 800; color: var(--secondary); opacity: 0.4; text-transform: uppercase; margin-top: 2px;">+91 9821xxxx44 • USR-9921</p>
+                        <p style="font-size: 0.85rem; font-weight: 900; color: var(--text-dark); margin: 0;"><?= htmlspecialchars($lead['student_name']) ?></p>
+                        <p style="font-size: 0.6rem; font-weight: 800; color: var(--secondary); opacity: 0.4; text-transform: uppercase; margin-top: 2px;">
+                            <?= htmlspecialchars($lead['student_phone']) ?> • <?= htmlspecialchars($lead['student_id'] ?: 'GUEST') ?>
+                        </p>
                     </td>
                     <td style="padding: 1.25rem 1.5rem;">
-                        <p style="font-size: 0.75rem; font-weight: 800; color: var(--text-dark); margin: 0;">Manipal Academy</p>
-                        <p style="font-size: 0.6rem; font-weight: 800; color: var(--secondary); opacity: 0.4; text-transform: uppercase; margin-top: 2px;">B.Tech Mechanical</p>
+                        <p style="font-size: 0.75rem; font-weight: 800; color: var(--text-dark); margin: 0;"><?= htmlspecialchars($lead['college_name'] ?: 'N/A') ?></p>
+                        <p style="font-size: 0.6rem; font-weight: 800; color: var(--secondary); opacity: 0.4; text-transform: uppercase; margin-top: 2px;">
+                            <?= htmlspecialchars($lead['course_interest']) ?>
+                        </p>
                     </td>
                     <td style="padding: 1.25rem 1.5rem;">
-                        <span style="background: #ecfdf5; color: #059669; padding: 4px 10px; border-radius: 8px; font-size: 0.6rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.05rem;">High [9.4]</span>
+                        <span style="background: <?= $lead['quality_score'] == 'HIGH' ? '#ecfdf5' : '#fef3c7' ?>; color: <?= $lead['quality_score'] == 'HIGH' ? '#059669' : '#d97706' ?>; padding: 4px 10px; border-radius: 8px; font-size: 0.6rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.05rem;">
+                            <?= htmlspecialchars($lead['quality_score']) ?>
+                        </span>
                     </td>
                     <td style="padding: 1.25rem 1.5rem;">
-                        <p style="font-size: 0.85rem; font-weight: 900; color: var(--text-dark); margin: 0;">₹1,200</p>
-                        <p style="font-size: 0.6rem; font-weight: 800; color: var(--secondary); opacity: 0.4; text-transform: uppercase; margin-top: 2px;">CPL_TIER_1</p>
+                        <p style="font-size: 0.85rem; font-weight: 900; color: var(--text-dark); margin: 0;">₹---</p>
+                        <p style="font-size: 0.6rem; font-weight: 800; color: var(--secondary); opacity: 0.4; text-transform: uppercase; margin-top: 2px;">LOG_ENTRY</p>
                     </td>
                     <td style="padding: 1.25rem 1.5rem; text-align: right;">
-                        <p style="font-size: 0.8rem; font-weight: 900; color: var(--text-dark); margin: 0;">14:22:01</p>
+                        <p style="font-size: 0.8rem; font-weight: 900; color: var(--text-dark); margin: 0;"><?= date('H:i:s', strtotime($lead['created_at'])) ?></p>
                     </td>
                 </tr>
+                <?php endforeach; ?>
+                <?php if (empty($leads)): ?>
+                <tr>
+                    <td colspan="5" style="padding: 2rem; text-align: center; color: var(--secondary); opacity: 0.5; font-size: 0.8rem; font-weight: 700;">No leads found in the system feed.</td>
+                </tr>
+                <?php endif; ?>
             </tbody>
         </table>
     </div>

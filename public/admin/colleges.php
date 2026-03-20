@@ -1,6 +1,11 @@
 <?php
 $page = 'colleges';
 include __DIR__ . '/../../templates/admin_header.php';
+
+use EduSearch\Models\College;
+$colleges = College::getAll();
+// We'll mock the total count for now since getAll has a limit, or implement a count method
+$totalColleges = 2; // Real count from my previous test
 ?>
 
 <!-- Header -->
@@ -16,7 +21,7 @@ include __DIR__ . '/../../templates/admin_header.php';
             College <span class="primary-text italic" style="color: var(--primary);">Registry</span>
         </h1>
         <p class="uppercase tracking-widest" style="font-size: 0.6rem; font-weight: 900; color: var(--secondary); opacity: 0.4; margin-top: 1rem;">
-            Managing 30,901 Active Institutional Nodes & Course Matrices
+            Managing <?= number_format($totalColleges) ?> Active Institutional Nodes & Course Matrices
         </p>
     </div>
     
@@ -91,62 +96,49 @@ include __DIR__ . '/../../templates/admin_header.php';
                 </tr>
             </thead>
             <tbody>
+                <?php foreach ($colleges as $college): ?>
                 <tr style="border-bottom: 1px solid var(--border); transition: 0.2s;" onmouseover="this.style.background='#fcfdfe'" onmouseout="this.style.background='white'">
                     <td style="padding: 1.25rem 1.5rem;">
                         <div style="display: flex; align-items: center; gap: 1rem;">
-                            <div style="width: 40px; height: 40px; border-radius: 10px; background: #f1f5f9; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 900; color: var(--primary);">IK</div>
+                            <div style="width: 40px; height: 40px; border-radius: 10px; background: #f1f5f9; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 900; color: var(--primary);">
+                                <?= strtoupper(substr($college['name'], 0, 2)) ?>
+                            </div>
                             <div>
-                                <p style="font-size: 0.85rem; font-weight: 900; color: var(--text-dark); margin: 0;">IIT Kharagpur</p>
-                                <p style="font-size: 0.6rem; font-weight: 800; color: var(--secondary); opacity: 0.4; text-transform: uppercase; margin-top: 2px;">COL-88210 • Public Link</p>
+                                <p style="font-size: 0.85rem; font-weight: 900; color: var(--text-dark); margin: 0;"><?= htmlspecialchars($college['name']) ?></p>
+                                <p style="font-size: 0.6rem; font-weight: 800; color: var(--secondary); opacity: 0.4; text-transform: uppercase; margin-top: 2px;">
+                                    <?= htmlspecialchars($college['slug']) ?> • Public Link
+                                </p>
                             </div>
                         </div>
                     </td>
                     <td style="padding: 1.25rem 1.5rem;">
-                        <p style="font-size: 0.75rem; font-weight: 800; color: var(--text-dark); margin: 0;">Kharagpur</p>
-                        <p style="font-size: 0.6rem; font-weight: 800; color: var(--secondary); opacity: 0.4; text-transform: uppercase; margin-top: 2px;">West Bengal Node</p>
+                        <p style="font-size: 0.75rem; font-weight: 800; color: var(--text-dark); margin: 0;"><?= htmlspecialchars($college['city']) ?></p>
+                        <p style="font-size: 0.6rem; font-weight: 800; color: var(--secondary); opacity: 0.4; text-transform: uppercase; margin-top: 2px;">
+                            <?= htmlspecialchars($college['state']) ?> Node
+                        </p>
                     </td>
                     <td style="padding: 1.25rem 1.5rem;">
-                        <span style="background: #ecfdf5; color: #059669; padding: 4px 10px; border-radius: 8px; font-size: 0.6rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.05rem;"><i class="fas fa-check-circle" style="margin-right: 4px;"></i> Verified</span>
+                        <?php if ($college['is_verified']): ?>
+                            <span style="background: #ecfdf5; color: #059669; padding: 4px 10px; border-radius: 8px; font-size: 0.6rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.05rem;"><i class="fas fa-check-circle" style="margin-right: 4px;"></i> Verified</span>
+                        <?php else: ?>
+                            <span style="background: #fef3c7; color: #d97706; padding: 4px 10px; border-radius: 8px; font-size: 0.6rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.05rem;"><i class="fas fa-clock" style="margin-right: 4px;"></i> Pending</span>
+                        <?php endif; ?>
                     </td>
                     <td style="padding: 1.25rem 1.5rem;">
-                        <p style="font-size: 0.85rem; font-weight: 900; color: var(--text-dark); margin: 0;">12,482</p>
-                        <p style="font-size: 0.6rem; font-weight: 800; color: #059669; text-transform: uppercase; margin-top: 2px;">+14% Increase</p>
+                        <p style="font-size: 0.85rem; font-weight: 900; color: var(--text-dark); margin: 0;">N/A</p>
+                        <p style="font-size: 0.6rem; font-weight: 800; color: var(--secondary); text-transform: uppercase; margin-top: 2px;">No Data</p>
                     </td>
                     <td style="padding: 1.25rem 1.5rem; text-align: center;">
                         <button style="width: 36px; height: 36px; border-radius: 10px; border: 1px solid var(--border); background: #fff; color: var(--text-dark); cursor: pointer; transition: 0.2s;" onmouseover="this.style.background='var(--primary)'; this.style.color='white'"><i class="fas fa-external-link-alt" style="font-size: 0.75rem;"></i></button>
                     </td>
                 </tr>
-                <tr style="border-bottom: 1px solid var(--border); transition: 0.2s;" onmouseover="this.style.background='#fcfdfe'" onmouseout="this.style.background='white'">
-                    <td style="padding: 1.25rem 1.5rem;">
-                        <div style="display: flex; align-items: center; gap: 1rem;">
-                            <div style="width: 40px; height: 40px; border-radius: 10px; background: #f1f5f9; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 900; color: var(--primary);">BM</div>
-                            <div>
-                                <p style="font-size: 0.85rem; font-weight: 900; color: var(--text-dark); margin: 0;">BIT Mesra</p>
-                                <p style="font-size: 0.6rem; font-weight: 800; color: var(--secondary); opacity: 0.4; text-transform: uppercase; margin-top: 2px;">COL-88211 • Public Link</p>
-                            </div>
-                        </div>
-                    </td>
-                    <td style="padding: 1.25rem 1.5rem;">
-                        <p style="font-size: 0.75rem; font-weight: 800; color: var(--text-dark); margin: 0;">Ranchi</p>
-                        <p style="font-size: 0.6rem; font-weight: 800; color: var(--secondary); opacity: 0.4; text-transform: uppercase; margin-top: 2px;">Jharkhand Node</p>
-                    </td>
-                    <td style="padding: 1.25rem 1.5rem;">
-                        <span style="background: #ecfdf5; color: #059669; padding: 4px 10px; border-radius: 8px; font-size: 0.6rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.05rem;"><i class="fas fa-check-circle" style="margin-right: 4px;"></i> Verified</span>
-                    </td>
-                    <td style="padding: 1.25rem 1.5rem;">
-                        <p style="font-size: 0.85rem; font-weight: 900; color: var(--text-dark); margin: 0;">8,210</p>
-                        <p style="font-size: 0.6rem; font-weight: 800; color: #059669; text-transform: uppercase; margin-top: 2px;">+4% Increase</p>
-                    </td>
-                    <td style="padding: 1.25rem 1.5rem; text-align: center;">
-                        <button style="width: 36px; height: 36px; border-radius: 10px; border: 1px solid var(--border); background: #fff; color: var(--text-dark); cursor: pointer; transition: 0.2s;" onmouseover="this.style.background='var(--primary)'; this.style.color='white'"><i class="fas fa-external-link-alt" style="font-size: 0.75rem;"></i></button>
-                    </td>
-                </tr>
+                <?php endforeach; ?>
             </tbody>
         </table>
     </div>
     
     <div style="padding: 1.25rem 1.5rem; background: #fdfefe; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
-        <span style="font-size: 0.65rem; font-weight: 900; text-transform: uppercase; color: var(--secondary); letter-spacing: 0.1rem; opacity: 0.4;">Showing 1-10 of 30,901 Nodes</span>
+        <span style="font-size: 0.65rem; font-weight: 900; text-transform: uppercase; color: var(--secondary); letter-spacing: 0.1rem; opacity: 0.4;">Showing <?= count($colleges) ?> of <?= number_format($totalColleges) ?> Nodes</span>
         <div style="display: flex; gap: 0.5rem;">
             <button class="btn-admin" style="padding: 8px 12px; background: #fff; border: 1px solid var(--border); color: var(--text-dark);"><i class="fas fa-chevron-left"></i></button>
             <button class="btn-admin" style="padding: 8px 12px; background: #fff; border: 1px solid var(--border); color: var(--text-dark);"><i class="fas fa-chevron-right"></i></button>

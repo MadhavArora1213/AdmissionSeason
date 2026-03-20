@@ -1,0 +1,7 @@
+/vendor
+/composer-setup.php
+/composer.phar
+/debug_*.php
+/debug_output.txt
+/test_db.php
+.env

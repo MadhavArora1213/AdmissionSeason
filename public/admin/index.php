@@ -1,6 +1,9 @@
 <?php
 $page = 'dashboard';
 include __DIR__ . '/../../templates/admin_header.php';
+
+use EduSearch\Models\Dashboard;
+$stats = Dashboard::getStats();
 ?>
 
 <!-- KPI Strip (High Fidelity Mirror) -->
@@ -18,7 +21,7 @@ include __DIR__ . '/../../templates/admin_header.php';
         <div>
             <h3 class="kpi-label">DAU (Students)</h3>
             <div style="display: flex; align-items: baseline; gap: 0.4rem;">
-                <p class="kpi-value font-black">142,842</p>
+                <p class="kpi-value font-black"><?= number_format($stats['students_today']) ?></p>
                 <span class="kpi-secondary">Today</span>
             </div>
         </div>
@@ -41,7 +44,7 @@ include __DIR__ . '/../../templates/admin_header.php';
         <div>
             <h3 class="kpi-label">Leads Today</h3>
             <div style="display: flex; align-items: baseline; gap: 0.4rem;">
-                <p class="kpi-value font-black">3,102</p>
+                <p class="kpi-value font-black"><?= number_format($stats['leads_today']) ?></p>
                 <span class="kpi-secondary">Active</span>
             </div>
         </div>
@@ -64,7 +67,7 @@ include __DIR__ . '/../../templates/admin_header.php';
         <div>
             <h3 class="kpi-label">Pending Reviews</h3>
             <div style="display: flex; align-items: baseline; gap: 0.4rem;">
-                <p class="kpi-value font-black">128</p>
+                <p class="kpi-value font-black"><?= number_format($stats['pending_reviews']) ?></p>
                 <span class="kpi-secondary">Action Needed</span>
             </div>
         </div>
@@ -87,7 +90,7 @@ include __DIR__ . '/../../templates/admin_header.php';
         <div>
             <h3 class="kpi-label">Active Clients</h3>
             <div style="display: flex; align-items: baseline; gap: 0.4rem;">
-                <p class="kpi-value font-black">42</p>
+                <p class="kpi-value font-black"><?= number_format($stats['active_clients']) ?></p>
                 <span class="kpi-secondary">B2B Colleges</span>
             </div>
         </div>
@@ -110,7 +113,7 @@ include __DIR__ . '/../../templates/admin_header.php';
         <div>
             <h3 class="kpi-label">Revenue MTD</h3>
             <div style="display: flex; align-items: baseline; gap: 0.4rem;">
-                <p class="kpi-value font-black">₹84.2k</p>
+                <p class="kpi-value font-black">₹<?= number_format($stats['revenue_mtd'], 1) ?>k</p>
                 <span class="kpi-secondary">INR</span>
             </div>
         </div>
