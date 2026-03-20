@@ -1,0 +1,13 @@
+{
+    "name": "edusearch/php-version",
+    "description": "EduSearch Platform PHP Port",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "EduSearch\\": "src/"
+        }
+    },
+    "require": {
+        "php": ">=8.1"
+    }
+}
