@@ -1,7 +1,6 @@
 <?php
 
-require_once __DIR__ . '/../src/Helpers/Database.php';
-require_once __DIR__ . '/../src/Models/College.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 use EduSearch\Models\College;
 
